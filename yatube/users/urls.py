@@ -16,4 +16,4 @@ urlpatterns = [
         name='login'
     ),
     path('signup/', views.SignUp.as_view(), name='signup'),
-] 
+]
