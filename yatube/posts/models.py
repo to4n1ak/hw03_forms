@@ -49,4 +49,5 @@ class Post(models.Model):
         ordering = ['-pub_date']
 
     def __str__(self):
-        return self.text
+        MAX_TEXT = 15  # Ограничение для отображения текста
+        return self.text[:MAX_TEXT]
