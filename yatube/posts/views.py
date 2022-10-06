@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post, Group, User
 from .forms import PostForm
 from .utils import page_num
+from django.contrib.auth.decorators import login_required
 
 POST_PER_PAGE = 10  # Кол-во постов на странице
 
@@ -28,7 +29,7 @@ def group_posts(request, slug):
 
 def profile(request, username):
     author = get_object_or_404(User, username=username)
-    post_list = author.posts.filter()
+    post_list = author.posts.all()
     page_obj = page_num(request, post_list, POST_PER_PAGE)
     context = {
         'author': author,
@@ -45,6 +46,7 @@ def post_detail(request, post_id):
     return render(request, 'posts/post_detail.html', context)
 
 
+@login_required
 def post_create(request):
     form = PostForm(
         data=request.POST or None,
@@ -60,6 +62,7 @@ def post_create(request):
     return redirect('posts:profile', post.author)
 
 
+@login_required
 def post_edit(request, post_id):
     post = get_object_or_404(Post, id=post_id)
 
